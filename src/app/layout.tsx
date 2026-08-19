@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ToastProvider } from "../components/ui/Toast";
 import { ThemeProvider } from "../components/theme-provider";
+import { SplashScreen } from "../components/layout/SplashScreen";
 
 export const metadata: Metadata = {
-  title: "Smart Team Workload Management",
-  description: "Real-time client-side team capacity, risk escalation, and workload balancing dashboard.",
+  title: "Equinox - Intelligent Workload & Capacity Management",
+  description: "Enterprise capacity balancing, dynamic priority aging, and resource expenditure orchestration.",
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 };
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
+          <SplashScreen />
           <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>
       </body>

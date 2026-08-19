@@ -45,6 +45,19 @@ export interface EnrichedTask extends Task {
   project?: Project | null;
 }
 
+export interface ProjectExpenditure {
+  totalEstimatedHours: number;
+  completedHours: number;
+  activeHours: number;
+  blendedHourlyRate: number;
+  totalBudget: number;
+  burnedCost: number;
+  remainingBudget: number;
+  burnRatePercent: number;
+  teamCapacityWeekly: number;
+  fteCommitment: number;
+}
+
 export interface EnrichedProject extends Project {
   members: Member[];
   lead?: Member | null;
@@ -52,6 +65,7 @@ export interface EnrichedProject extends Project {
   activeTasks: Task[];
   totalEstimatedHours: number;
   completionPercent: number;
+  expenditure: ProjectExpenditure;
 }
 
 export interface TaskFilters {
@@ -854,11 +868,45 @@ export function useProjects(): EnrichedProject[] {
         (sum, t) => sum + (t.estimatedHours || 0),
         0
       );
+      const doneHours = doneTasks.reduce(
+        (sum, t) => sum + (t.estimatedHours || 0),
+        0
+      );
+      const activeHours = activeTasks.reduce(
+        (sum, t) => sum + (t.estimatedHours || 0),
+        0
+      );
 
       const completionPercent =
         projectTasks.length > 0
           ? Math.round((doneTasks.length / projectTasks.length) * 100)
           : 0;
+
+      // Resource & Financial Expenditure Calculation ($85/hr blended rate)
+      const blendedHourlyRate = 85;
+      const totalBudget = totalHours * blendedHourlyRate;
+      const burnedCost = doneHours * blendedHourlyRate;
+      const remainingBudget = activeHours * blendedHourlyRate;
+      const burnRatePercent =
+        totalHours > 0 ? Math.round((doneHours / totalHours) * 100) : 0;
+      const teamCapacityWeekly = projectMembers.reduce(
+        (sum, m) => sum + (m.capacityHoursPerWeek || 0),
+        0
+      );
+      const fteCommitment = Math.round((teamCapacityWeekly / 40) * 10) / 10;
+
+      const expenditure: ProjectExpenditure = {
+        totalEstimatedHours: totalHours,
+        completedHours: doneHours,
+        activeHours,
+        blendedHourlyRate,
+        totalBudget,
+        burnedCost,
+        remainingBudget,
+        burnRatePercent,
+        teamCapacityWeekly,
+        fteCommitment,
+      };
 
       return {
         ...p,
@@ -868,6 +916,7 @@ export function useProjects(): EnrichedProject[] {
         activeTasks,
         totalEstimatedHours: totalHours,
         completionPercent,
+        expenditure,
       };
     });
   }, [projects, members, tasks]);

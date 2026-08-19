@@ -10,4 +10,6 @@ export interface Project {
   leadId: string | null; // Project Lead / Manager
   startDate: string; // ISO date
   targetDate: string; // ISO date
+  resourceQuotaHours?: number; // Configurable effort quota cap (hours)
+  resourceQuotaBudget?: number; // Configurable financial budget cap ($)
 }

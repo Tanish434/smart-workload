@@ -3,17 +3,29 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Plus, RefreshCw } from "lucide-react";
+import { Bell, Plus, RefreshCw, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useAlerts, useWorkloadStore } from "../../store/useWorkloadStore";
+import { useAuthStore } from "../../store/useAuthStore";
 import { useToast } from "../ui/Toast";
 import { ThemeSwitch } from "../ui/theme-switch";
+import { Avatar } from "../ui/Avatar";
 import { NotificationDropdown } from "./NotificationDropdown";
 
 export const Topbar: React.FC = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const alerts = useAlerts();
   const resetToSeed = useWorkloadStore((state) => state.resetToSeed);
   const toast = useToast();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+    toast.info("Signed out of admin session", "Logged Out");
+    router.push("/login");
+  };
 
   const totalAlertCount =
     alerts.overloadedMembers.length +
@@ -29,7 +41,7 @@ export const Topbar: React.FC = () => {
     }
     if (pathname.startsWith("/projects/")) {
       return {
-        title: "Project Cockpit",
+        title: "Project Overview",
         subtitle: "Milestones, assigned team roster, and project deliverables",
       };
     }
@@ -138,6 +150,24 @@ export const Topbar: React.FC = () => {
 
         {/* Interactive Notifications System */}
         <NotificationDropdown />
+
+        {/* Admin Profile & Logout */}
+        <div className="flex items-center gap-2 pl-1 sm:pl-2 border-l border-slate-200 dark:border-slate-800">
+          <Avatar
+            name={user?.name || "Devon Vance"}
+            src={user?.avatar}
+            size="sm"
+            className="shrink-0 ring-1 ring-indigo-500/30"
+          />
+          <button
+            type="button"
+            onClick={handleLogout}
+            title="Sign Out of Admin Portal"
+            className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </header>
   );

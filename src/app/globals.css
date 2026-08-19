@@ -109,3 +109,18 @@ body {
     clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%));
   }
 }
+
+/* Frequency Wave Equalizer Animation */
+@keyframes waveform {
+  0%, 100% {
+    transform: scaleY(0.2);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.animate-waveform {
+  animation: waveform 0.85s ease-in-out infinite;
+  transform-origin: bottom;
+}

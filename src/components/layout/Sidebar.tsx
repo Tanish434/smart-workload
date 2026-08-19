@@ -66,18 +66,22 @@ export const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex flex-col w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 h-screen sticky top-0">
       {/* Brand Header */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/40 dark:bg-slate-900/40">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/25 ring-1 ring-white/20 dark:ring-indigo-400/20 group cursor-pointer transition-transform hover:scale-105 shrink-0">
-          <Layers className="w-5 h-5 transition-transform duration-300 group-hover:rotate-12" />
+        <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-indigo-500/20 ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 flex items-center justify-center group cursor-pointer transition-transform hover:scale-105 shrink-0 p-1">
+          <img
+            src="/logo.png"
+            alt="Equinox Logo"
+            className="w-full h-full object-contain"
+          />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <h1 className="font-extrabold text-[15px] tracking-tight leading-none text-slate-900 dark:text-white flex items-center">
-              <span>Smart</span>
-              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 dark:from-indigo-400 dark:via-violet-400 dark:to-indigo-300 bg-clip-text text-transparent ml-0.5">
-                Workload
+            <h1 className="font-black text-base tracking-tight leading-none text-slate-900 dark:text-white flex items-center">
+              <span>Equi</span>
+              <span className="bg-gradient-to-r from-teal-500 via-indigo-500 to-indigo-600 dark:from-teal-400 dark:via-indigo-400 dark:to-indigo-300 bg-clip-text text-transparent">
+                nox
               </span>
             </h1>
-            <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60 tracking-wider uppercase">
+            <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-teal-50 dark:bg-teal-950/80 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 tracking-wider uppercase">
               PRO
             </span>
           </div>

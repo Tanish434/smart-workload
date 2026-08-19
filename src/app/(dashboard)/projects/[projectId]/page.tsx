@@ -17,6 +17,10 @@ import {
   AlertCircle,
   Briefcase,
   Edit,
+  DollarSign,
+  Wallet,
+  Flame,
+  TrendingUp,
 } from "lucide-react";
 import {
   useProjectById,
@@ -67,6 +71,8 @@ export default function ProjectDetailPage() {
     toast.info(`Project "${project.name}" was deleted.`, "Project Removed");
     router.push("/projects");
   };
+
+  const exp = project.expenditure;
 
   return (
     <div className="space-y-6 sm:space-y-8 animate-fade-in">
@@ -154,7 +160,7 @@ export default function ProjectDetailPage() {
             </span>
             <span className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mt-0.5">
               <Users className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-              {project.members.length} Members
+              {project.members.length} Members ({exp ? exp.fteCommitment : 0} FTE)
             </span>
           </div>
 
@@ -176,6 +182,84 @@ export default function ProjectDetailPage() {
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
               {project.completionPercent}%
             </span>
+          </div>
+        </div>
+      </Card>
+
+      {/* Resource Expenditure & Financial Burn Analysis Panel */}
+      <Card className="p-6 sm:p-7">
+        <div className="flex items-center justify-between gap-4 mb-5">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+              <Wallet className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                Resource & Cost Expenditure Analysis
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Live burn rate calculated using blended ${exp ? exp.blendedHourlyRate : 85}/hr engineering capacity rate.
+              </p>
+            </div>
+          </div>
+
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            {exp ? exp.burnRatePercent : 0}% Budget Expended
+          </span>
+        </div>
+
+        {/* 3 Metric Tiles */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block">
+              Total Allocated Budget
+            </span>
+            <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono mt-1 block">
+              ${exp ? exp.totalBudget.toLocaleString() : 0}
+            </span>
+            <span className="text-[11px] text-slate-400 mt-0.5 block">
+              Based on {project.totalEstimatedHours}h estimated effort
+            </span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block">
+              Burned Capital (Delivered)
+            </span>
+            <span className="text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono mt-1 block">
+              ${exp ? exp.burnedCost.toLocaleString() : 0}
+            </span>
+            <span className="text-[11px] text-indigo-500 mt-0.5 block">
+              {exp ? exp.completedHours : 0}h completed engineering tasks
+            </span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block">
+              Remaining In-Flight Budget
+            </span>
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-1 block">
+              ${exp ? exp.remainingBudget.toLocaleString() : 0}
+            </span>
+            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5 block">
+              {exp ? exp.activeHours : 0}h active tasks pending completion
+            </span>
+          </div>
+        </div>
+
+        {/* Visual Burn Meter */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400">
+            <span>Expenditure Burn Meter</span>
+            <span>
+              ${exp ? exp.burnedCost.toLocaleString() : 0} / ${exp ? exp.totalBudget.toLocaleString() : 0} ({exp ? exp.burnRatePercent : 0}%)
+            </span>
+          </div>
+          <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
+            <div
+              className="h-full bg-gradient-to-r from-emerald-500 via-indigo-500 to-violet-600 rounded-full transition-all duration-300 shadow-xs"
+              style={{ width: `${exp ? exp.burnRatePercent : 0}%` }}
+            />
           </div>
         </div>
       </Card>
