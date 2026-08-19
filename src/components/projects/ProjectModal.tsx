@@ -45,6 +45,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   const [leadId, setLeadId] = useState<string>("");
   const [selectedMemberIds, setSelectedMemberIds] = useState<string[]>([]);
   const [targetDate, setTargetDate] = useState("");
+  const [resourceQuotaHours, setResourceQuotaHours] = useState<number | "">("");
+  const [resourceQuotaBudget, setResourceQuotaBudget] = useState<number | "">("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -58,6 +60,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       setLeadId(projectToEdit.leadId || "");
       setSelectedMemberIds(projectToEdit.memberIds || []);
       setTargetDate(projectToEdit.targetDate || "");
+      setResourceQuotaHours(projectToEdit.resourceQuotaHours ?? "");
+      setResourceQuotaBudget(projectToEdit.resourceQuotaBudget ?? "");
     } else {
       setName("");
       setDescription("");
@@ -68,6 +72,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 30);
       setTargetDate(futureDate.toISOString().split("T")[0]);
+      setResourceQuotaHours(120);
+      setResourceQuotaBudget(10200);
     }
     setErrors({});
   }, [projectToEdit, open]);
@@ -91,6 +97,15 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
     setErrors(errs);
 
     if (Object.keys(errs).length === 0) {
+      const quotaHoursNum =
+        typeof resourceQuotaHours === "number" ? resourceQuotaHours : undefined;
+      const quotaBudgetNum =
+        typeof resourceQuotaBudget === "number"
+          ? resourceQuotaBudget
+          : quotaHoursNum
+          ? quotaHoursNum * 85
+          : undefined;
+
       if (projectToEdit) {
         updateProject(projectToEdit.id, {
           name: name.trim(),
@@ -100,6 +115,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           leadId: leadId || null,
           memberIds: selectedMemberIds,
           targetDate,
+          resourceQuotaHours: quotaHoursNum,
+          resourceQuotaBudget: quotaBudgetNum,
         });
         toast.success(`Project "${name}" updated!`, "Project Saved");
       } else {
@@ -112,6 +129,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           memberIds: selectedMemberIds,
           startDate: new Date().toISOString().split("T")[0],
           targetDate,
+          resourceQuotaHours: quotaHoursNum,
+          resourceQuotaBudget: quotaBudgetNum,
         });
         toast.success(`Project "${p.name}" initialized!`, "Project Created");
       }
@@ -240,6 +259,59 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               </p>
             )}
           </div>
+        </div>
+
+        {/* Resource Quota & Budget Boundaries */}
+        <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <span>Resource Quota & Financial Cap</span>
+            </span>
+            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+              Capacity Guard
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                Effort Quota Limit (Hours)
+              </label>
+              <input
+                type="number"
+                min="0"
+                placeholder="e.g. 120"
+                value={resourceQuotaHours}
+                onChange={(e) =>
+                  setResourceQuotaHours(
+                    e.target.value === "" ? "" : Number(e.target.value)
+                  )
+                }
+                className="w-full px-3 py-1.5 text-xs sm:text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                Max Financial Budget ($)
+              </label>
+              <input
+                type="number"
+                min="0"
+                placeholder="e.g. 10200"
+                value={resourceQuotaBudget}
+                onChange={(e) =>
+                  setResourceQuotaBudget(
+                    e.target.value === "" ? "" : Number(e.target.value)
+                  )
+                }
+                className="w-full px-3 py-1.5 text-xs sm:text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+              />
+            </div>
+          </div>
+          <p className="text-[10px] text-slate-400">
+            Sets the maximum resource ceiling. Real-time alerts will trigger if assigned tasks exceed this threshold.
+          </p>
         </div>
 
         {/* Assigned Team Roster Multi-Select */}

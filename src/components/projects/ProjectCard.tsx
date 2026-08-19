@@ -160,6 +160,24 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               {exp ? exp.burnRatePercent : 0}% Burn Rate
             </span>
           </div>
+
+          {/* Quota Cap Status */}
+          {project.resourceQuotaHours ? (
+            <div className="pt-1.5 border-t border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-[10px]">
+              <span className="text-slate-500 dark:text-slate-400">
+                Resource Quota: <strong className="text-slate-700 dark:text-slate-300 font-mono">{project.resourceQuotaHours}h Limit</strong>
+              </span>
+              {project.totalEstimatedHours > project.resourceQuotaHours ? (
+                <span className="font-bold text-rose-600 dark:text-rose-400">
+                  ⚠️ Over by {project.totalEstimatedHours - project.resourceQuotaHours}h
+                </span>
+              ) : (
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                  ✓ Within Quota
+                </span>
+              )}
+            </div>
+          ) : null}
         </div>
 
         {/* Lead & FTE Info */}

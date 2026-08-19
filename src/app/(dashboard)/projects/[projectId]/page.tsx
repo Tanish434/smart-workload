@@ -248,7 +248,7 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Visual Burn Meter */}
-        <div className="space-y-2">
+        <div className="space-y-2 mb-4">
           <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400">
             <span>Expenditure Burn Meter</span>
             <span>
@@ -261,6 +261,32 @@ export default function ProjectDetailPage() {
               style={{ width: `${exp ? exp.burnRatePercent : 0}%` }}
             />
           </div>
+        </div>
+
+        {/* Resource Quota Ceiling & Safety Indicator */}
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-slate-700 dark:text-slate-300">
+              Configured Resource Quota:
+            </span>
+            <span className="font-mono font-semibold text-slate-900 dark:text-white px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              {project.resourceQuotaHours ? `${project.resourceQuotaHours} Hours ($${(project.resourceQuotaBudget || project.resourceQuotaHours * 85).toLocaleString()} Cap)` : "No Quota Configured"}
+            </span>
+          </div>
+
+          {project.resourceQuotaHours && (
+            <div>
+              {project.totalEstimatedHours > project.resourceQuotaHours ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-50 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+                  <span>⚠️ Project Effort Exceeds Quota by {project.totalEstimatedHours - project.resourceQuotaHours}h</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  <span>✓ Effort Within Defined Quota ({Math.round((project.totalEstimatedHours / project.resourceQuotaHours) * 100)}% utilized)</span>
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </Card>
 

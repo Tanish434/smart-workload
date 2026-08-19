@@ -15,6 +15,7 @@ import {
   Trash2,
   Mail,
   MessageSquare,
+  Video,
 } from "lucide-react";
 import { useMemberById } from "../../../../store/useWorkloadStore";
 import { Card } from "../../../../components/ui/Card";
@@ -26,6 +27,7 @@ import { WorkloadBar } from "../../../../components/team/WorkloadBar";
 import { MarkUnavailableModal } from "../../../../components/team/MarkUnavailableModal";
 import { DeleteMemberModal } from "../../../../components/team/DeleteMemberModal";
 import { EmailModal } from "../../../../components/chat/EmailModal";
+import { VideoCallModal } from "../../../../components/chat/VideoCallModal";
 
 export default function MemberDetailPage() {
   const params = useParams();
@@ -36,6 +38,7 @@ export default function MemberDetailPage() {
   const [isUnavailableModalOpen, setIsUnavailableModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   if (!member) {
     return (
@@ -125,6 +128,15 @@ export default function MemberDetailPage() {
             <Button
               variant="secondary"
               size="md"
+              onClick={() => setIsVideoModalOpen(true)}
+              leftIcon={<Video className="w-4 h-4 text-teal-600 dark:text-teal-400" />}
+            >
+              Video Call
+            </Button>
+
+            <Button
+              variant="secondary"
+              size="md"
               onClick={() => setIsEmailModalOpen(true)}
               leftIcon={<Mail className="w-4 h-4 text-indigo-500" />}
             >
@@ -159,6 +171,13 @@ export default function MemberDetailPage() {
           onClose={() => setIsEmailModalOpen(false)}
           member={member}
           projects={member.projects}
+        />
+
+        {/* Video Call Modal */}
+        <VideoCallModal
+          open={isVideoModalOpen}
+          onClose={() => setIsVideoModalOpen(false)}
+          member={member}
         />
 
         {/* Workload Status Bar in Header */}

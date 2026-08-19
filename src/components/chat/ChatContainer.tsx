@@ -12,11 +12,13 @@ import {
   FolderKanban,
   ExternalLink,
   CheckCheck,
+  Video,
 } from "lucide-react";
 import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Avatar } from "../ui/Avatar";
 import { EmailModal } from "./EmailModal";
+import { VideoCallModal } from "./VideoCallModal";
 import {
   useWorkloadStore,
   useChatThreads,
@@ -41,6 +43,7 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [inputText, setInputText] = useState("");
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   // Synchronize when initialMemberId prop updates
   useEffect(() => {
@@ -263,8 +266,18 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
                 </div>
               </div>
 
-              {/* Action Buttons: Direct Email */}
+              {/* Action Buttons: Video Call & Direct Email */}
               <div className="flex items-center gap-2 shrink-0">
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="sm"
+                  onClick={() => setIsVideoModalOpen(true)}
+                  leftIcon={<Video className="w-3.5 h-3.5 text-white" />}
+                >
+                  <span className="hidden sm:inline">Video Call</span>
+                </Button>
+
                 <Button
                   type="button"
                   variant="secondary"
@@ -424,6 +437,15 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
           onClose={() => setIsEmailModalOpen(false)}
           member={activeMember}
           projects={activeProjects}
+        />
+      )}
+
+      {/* Live Video Huddle Modal */}
+      {activeMember && (
+        <VideoCallModal
+          open={isVideoModalOpen}
+          onClose={() => setIsVideoModalOpen(false)}
+          member={activeMember}
         />
       )}
     </div>

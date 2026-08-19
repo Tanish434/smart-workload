@@ -1,34 +1,44 @@
-# ⚡ SmartWorkload PRO — Intelligent Team Capacity & Workload Balancing Dashboard
+# ⚡ Equinox PRO — Intelligent Capacity Balancing & Resource Orchestration
 
-A state-of-the-art, frontend-reactive capacity balancing, project coordination, and priority scheduling portal built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Zustand**.
+A state-of-the-art, frontend-reactive capacity balancing, resource expenditure tracking, and priority scheduling portal built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Zustand**.
 
-![SmartWorkload Overview](https://raw.githubusercontent.com/Tanish434/smart-workload/main/public/favicon.ico)
+![Equinox Logo](https://raw.githubusercontent.com/Tanish434/smart-workload/main/public/logo.png)
 
 ---
 
 ## 🌟 Key Features & Capabilities
 
-### 1. 📊 Real-Time Workload & Capacity Math Engine
+### 1. 💰 Resource & Capital Expenditure Engine (`/projects`)
+- **Real-Time Financial Math**: Blended engineering rate ($85/hr) automatically derives:
+  - **Total Allocated Project Budget**: $\sum \text{Estimated Task Hours} \times \$85$.
+  - **Burned Capital (Delivered)**: $\sum \text{Done Task Hours} \times \$85$.
+  - **Remaining In-Flight Capital**: $\sum \text{Active Task Hours} \times \$85$.
+  - **Effort Burn Rate %**: Real-time progress meter tracking effort vs budget.
+- **Configurable Resource Quotas & Guards**:
+  - Set maximum effort caps (Hours) and financial ceilings ($) during project creation and editing.
+  - Automatic quota utilization tracking with visual `✓ Within Quota` badges and `⚠️ Over Quota` breach alerts.
+- **Organizational Portfolio Dashboard**: Top-level 4-metric executive overview showing total portfolio budget, burned capital, and committed FTE engineering workforce.
+
+### 2. 📹 Admin Communications, Direct Email & Live Video Huddles (`/chat`)
+- **Live Video Huddle Room**: Instant WebRTC-style simulated high-definition video room:
+  - Live audio waveform equalizer indicator.
+  - Interactive camera, microphone, and screen share controls.
+  - 1-Click meeting link generator & clipboard copy.
+  - Managerial quick agenda presets (5-Min Check-In, Overload Relief, Sprint Alignment).
+- **Direct Messaging Portal**: Multi-channel communications hub with active project indicators, simulated teammate responses, and unread badges.
+- **Official Email Dispatcher**: Pre-filled teammate work email templates with 1-click dispatch and `mailto:` launcher.
+
+### 3. 📊 Real-Time Workload & Capacity Math Engine
 - **Live Workload Computation**: Team capacity percentages and allocated hours are derived in real-time from active task assignments without static mock values.
 - **Dynamic Overload & Risk Detection**: Automatically flags teammates exceeding 100% capacity and highlights near-capacity warnings ($\ge 85\%$).
 - **Fluid Visualizations**: Zero horizontal overflow capacity distribution bars with member avatars, active roles, and allocation breakdowns.
 
-### 2. ⚡ Dynamic Priority Escalation (OS-Style Priority Aging with Feedback)
+### 4. ⚡ Dynamic Priority Escalation (OS-Style Priority Aging with Feedback)
 - **Multi-Factor Aging Algorithm**: Inspired by operating system priority scheduling to prevent task starvation and missed milestones:
   - **Looming Deadlines**: Low and Medium priority tasks dynamically escalate to **High** ($\le 3$ days) or **Critical** ($\le 1$ day / Overdue).
   - **Workload Feedback Loop**: Adds urgency points when an assigned teammate is currently overloaded ($>100\%$).
   - **Starvation Penalty**: Automatically boosts unassigned tasks nearing target dates.
 - **Visual Aging Indicators**: Escalated priority badges (`⚡ CRITICAL`, `⚡ HIGH`) across task cards, detail banners, and dashboard widgets.
-
-### 3. 💬 Admin Team Communications & Direct Email Dispatch
-- **Direct Messaging Portal (`/chat`)**: Multi-channel communications hub for team admins:
-  - Teammate channels with profile avatars, availability status, active project badges, and unread counters.
-  - Quick managerial prompts (Timeline ETA request, Bandwidth inquiry, Sprint kudos).
-  - Realistic simulated teammate response loop with in-app notification toasts.
-- **Official Email Dispatcher**: Integrated email composer with:
-  - Pre-filled team member work emails and project associations.
-  - 1-click templates for Looming Deadlines, Workload Rebalances, and Milestone Commendations.
-  - Native `mailto:` client launch and formatted text clipboard copy.
 
 ### 4. 🗂️ Multi-Project Cockpit & Organizational Tracking (`/projects`)
 - **Project Workspaces**: Track completion rates, total estimated hours, assigned team rosters, and project leads.
